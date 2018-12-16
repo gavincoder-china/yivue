@@ -1,0 +1,27 @@
+{
+  "name": "yivue",
+  "version": "1.0.0",
+  "description": "a easy way to use vue single page.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": "yivue",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chenbimo/yivue.git"
+  },
+  "keywords": [
+    "vue",
+    "vuejs",
+    "single",
+    "pages",
+    "yivue"
+  ],
+  "author": "chensuiyi",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/chenbimo/yivue/issues"
+  },
+  "homepage": "https://github.com/chenbimo/yivue#readme"
+}
