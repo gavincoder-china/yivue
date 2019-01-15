@@ -1,6 +1,6 @@
 {
   "name": "yivue",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "a easy way to use vue single page.",
   "main": "index.js",
   "scripts": {

@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>yivue</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="../public/yivue.css">
+	</head>
+	<body>
+		<div class="YiVue" id="YiVue">
+			<router-view name="head"></router-view>
+			<router-view name="menu"></router-view>
+			<router-view name="body"></router-view>
+			<router-view name="foot"></router-view>
+		</div>
+	</body>
+
+	<!--[组件文件]-->
+	<!--[:yivue_components]-->
+	<!--[组件文件]-->
+
+	<!--[页面文件]-->
+	<!--[:yivue_pages]-->
+	<!--[页面文件]-->
+
+	<script src="../public/vue.min.js"></script>
+	<script src="../public/vue-router.min.js"></script>
+	<script src="./yivue_data.js"></script>
+	<script src="./yivue_components.js"></script>
+	<script src="./yivue_pages.js"></script>
+	<script src="./yivue_routes.js"></script>
+	<script src="./yivue_index.js"></script>
+</html>
