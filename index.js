@@ -1,25 +1,25 @@
 #!/usr/bin/env node
-const $fs	= require('fs'); // 引入文件系统
-const $path = require('path'); // 引入路径系统
-const $ysc	= require('./yishellcolor.js');
+const _fs	= require('fs'); // 引入文件系统
+const _path = require('path'); // 引入路径系统
+const _ysc	= require('./yishellcolor.js');
 
 // 参数检查
 if(process.argv.length < 3){ // 判断参数长度
-	console.log($ysc('[FR]缺少配置参数[E]'));
+	console.log(_ysc('[FR]缺少配置参数[E]'));
 	return;
 }
 
 // 配置文件目录存在性检查
-const $config_dir = $path.resolve(process.argv[2]); // 得到配置文件目录的绝对路径
-if(!$fs.existsSync($config_dir)){
-	console.log($ysc('[FR]配置目录不存在[E]'));
+const $config_dir = _path.resolve(process.argv[2]); // 得到配置文件目录的绝对路径
+if(!_fs.existsSync($config_dir)){
+	console.log(_ysc('[FR]配置目录不存在[E]'));
 	return;
 }
 
 // 配置文件存在性检查
-const $config_file = $path.join($config_dir,'yivue.config.js'); // 得到配置文件的绝对路径
-if(!$fs.existsSync($config_file)){
-	console.log($ysc('[FR]配置文件不存在[E]'));
+const $config_file = _path.join($config_dir,'yivue.config.js'); // 得到配置文件的绝对路径
+if(!_fs.existsSync($config_file)){
+	console.log(_ysc('[FR]配置文件不存在[E]'));
 	return;
 }
 
@@ -64,30 +64,30 @@ for(let $prop of $config_data){
 	} = $prop; // 对象参数结构并设置默认值
 
 	if(!name){ // 是否填写项目名称
-		console.log($ysc('[FR]请填写项目名称[E] ' + JSON.stringify($prop)));
+		console.log(_ysc('[FR]请填写项目名称[E] ' + JSON.stringify($prop)));
 		$check_success = false;
 		break;
 	}
 
-	let $src_dir			= $path.join($config_dir,src_dir); // 源码目录
-	let $components_dir		= $path.join($src_dir,components_dir); // 组件目录
-	let $pages_dir			= $path.join($src_dir,pages_dir); // 页面目录
-	let $dist_dir			= $path.join($config_dir,dist_dir); // 生成的资源目录
-	let $from_html			= $path.join($src_dir,from_html); // 静态网页模板文件
-	let $to_html			= $path.join($dist_dir,to_html); // 静态单页文件
-	let $from_index 		= $path.join($src_dir,from_index); // 入口源文件
-	let $to_index 			= $path.join($dist_dir,to_index); // 入口目标文件
-	let $from_data 			= $path.join($src_dir,from_data); // 入口源文件
-	let $to_data 			= $path.join($dist_dir,to_data); // 入口目标文件
-	
-	if(!$fs.existsSync($dist_dir)){
-		$fs.mkdirSync($path.join($dist_dir));
+	let $src_dir			= _path.join($config_dir,src_dir); // 源码目录
+	let $components_dir		= _path.join($src_dir,components_dir); // 组件目录
+	let $pages_dir			= _path.join($src_dir,pages_dir); // 页面目录
+	let $dist_dir			= _path.join($config_dir,dist_dir); // 生成的资源目录
+	let $from_html			= _path.join($src_dir,from_html); // 静态网页模板文件
+	let $to_html			= _path.join($dist_dir,to_html); // 静态单页文件
+	let $from_index 		= _path.join($src_dir,from_index); // 入口源文件
+	let $to_index 			= _path.join($dist_dir,to_index); // 入口目标文件
+	let $from_data 			= _path.join($src_dir,from_data); // 入口源文件
+	let $to_data 			= _path.join($dist_dir,to_data); // 入口目标文件
+
+	if(!_fs.existsSync($dist_dir)){
+		_fs.mkdirSync(_path.join($dist_dir));
 	}
-	
+
 	let $params	= [$src_dir,$components_dir,$pages_dir,$from_html,$from_index,$from_data]; // 需要被检测的参数数组
 	for(let $p of $params){
-		if(!$fs.existsSync($p)){
-			console.log($ysc('<FY>[ <FR>' + name + '<FY> ]<E>  ' + $p + ' 不存在','<','>'));
+		if(!_fs.existsSync($p)){
+			console.log(_ysc('<FY>[ <FR>' + name + '<FY> ]<E>  ' + $p + ' 不存在','<','>'));
 			$check_exists = false;
 			break;
 		}
@@ -99,10 +99,10 @@ for(let $prop of $config_data){
 	}
 
 	// 开始处理组件资源
-	$files_all = $fs.readdirSync($components_dir,{withFileTypes:true}); // 获取所有组件文件
+	$files_all = _fs.readdirSync($components_dir,{withFileTypes:true}); // 获取所有组件文件
 
 	$files_html = $files_all.filter(($v) => { // 过滤所有非 .html 文件
-		if($v.isFile() && $path.extname($v.name) === '.html'){
+		if($v.isFile() && _path.extname($v.name) === '.html'){
 			return true;
 		}else{
 			return false;
@@ -110,26 +110,26 @@ for(let $prop of $config_data){
 	});
 
 	for(let $p of $files_html){ // 循环读取所有组件数据
-		let $data_html 		= $fs.readFileSync($path.join($components_dir,$p.name),{encoding:'utf8'});
+		let $data_html 		= _fs.readFileSync(_path.join($components_dir,$p.name),{encoding:'utf8'});
 		let $regx_template	= new RegExp($str_template,'gi'); // 模板正则
 		let $regx_script	= new RegExp($str_script,'gi'); // 脚本正则
 		let $regx_dobule	= new RegExp($str_template + $str_script,'gi'); // 双重正则
 		if(!$regx_template.test($data_html)){// 检测是否有模板
-			console.log($ysc('[FY]' + name + ' [FC]component[FG] ' + $p.name + ' [FW]未找到 template[E]'));
+			console.log(_ysc('[FY]' + name + ' [FC]component[FG] ' + $p.name + ' [FW]未找到 template[E]'));
 			$check_data = false;
 			break;
 		}
 		if(!$regx_script.test($data_html)){// 检测是否有脚本
-			console.log($ysc('[FY]' + name + ' [FC]component[FG] ' + $p.name + ' [FW]未找到 script[E]'));
+			console.log(_ysc('[FY]' + name + ' [FC]component[FG] ' + $p.name + ' [FW]未找到 script[E]'));
 			$check_data = false;
 			break;
 		}
 		$data_html.replace($regx_dobule,($match,$template,$script) => {
-			$name_component = 'component-' + $path.basename($p.name,'.html'); // 取得文件名
+			$name_component = 'component-' + _path.basename($p.name,'.html'); // 取得文件名
 			$html_components.push('<script type="text/html" id="'+ $name_component +'">\n'+ $template.trim() +'\n</script>\n'); // 缓存组件模板资源
 			$js_components.push('$yivue_components["' + $name_component + '"] = ' + $script.trim().replace(/\^\-\^/gi,($_,$n) => {return $name_component;}) + '\n\n'); // 缓存组件脚本资源
 		});
-		console.log($ysc('[FY]' + name + '[FP] component[FG] ' + $p.name + '[FW] 处理完成...[E]'));
+		console.log(_ysc('[FY]' + name + '[FP] component[FG] ' + $p.name + '[FW] 处理完成...[E]'));
 	}
 
 	if($check_data === false){
@@ -138,10 +138,10 @@ for(let $prop of $config_data){
 	}
 
 	// 开始处理页面资源
-	$files_all = $fs.readdirSync($pages_dir,{withFileTypes:true}); // 获取所有文件
+	$files_all = _fs.readdirSync($pages_dir,{withFileTypes:true}); // 获取所有文件
 
 	$files_html = $files_all.filter(($v) => { // 过滤所有非 .html 文件
-		if($v.isFile() && $path.extname($v.name) === '.html'){
+		if($v.isFile() && _path.extname($v.name) === '.html'){
 			return true;
 		}else{
 			return false;
@@ -149,34 +149,34 @@ for(let $prop of $config_data){
 	});
 
 	for(let $p of $files_html){ // 循环读取所有页面数据
-		let $data_html 		= $fs.readFileSync($path.join($pages_dir,$p.name),{encoding:'utf8'});
+		let $data_html 		= _fs.readFileSync(_path.join($pages_dir,$p.name),{encoding:'utf8'});
 		let $regx_template	= new RegExp($str_template,'gi'); // 模板正则
 		let $regx_script	= new RegExp($str_script,'gi'); // 脚本正则
 		let $regx_route		= new RegExp($str_route,'gi'); // 脚本正则
 		let $regx_all		= new RegExp($str_template + $str_script + $str_route,'gi'); // 三重正则
 		if(!$regx_template.test($data_html)){// 检测是否有模板
-			console.log($ysc('[FY]' + name + ' [FC]pages[FG] ' + $p.name + ' [FW]未找到 template[E]'));
+			console.log(_ysc('[FY]' + name + ' [FC]pages[FG] ' + $p.name + ' [FW]未找到 template[E]'));
 			$check_data = false;
 			break;
 		}
 		if(!$regx_script.test($data_html)){// 检测是否有脚本
-			console.log($ysc('[FY]' + name + ' [FC]pages[FG] ' + $p.name + ' [FW]未找到 script[E]'));
+			console.log(_ysc('[FY]' + name + ' [FC]pages[FG] ' + $p.name + ' [FW]未找到 script[E]'));
 			$check_data = false;
 			break;
 		}
 		if(!$regx_route.test($data_html)){// 检测是否有路由
-			console.log($ysc('[FY]' + name + ' [FC]pages[FG] ' + $p.name + ' [FW]未找到 route[E]'));
+			console.log(_ysc('[FY]' + name + ' [FC]pages[FG] ' + $p.name + ' [FW]未找到 route[E]'));
 			$check_data = false;
 			break;
 		}
 		$data_html.replace($regx_all,($match,$template,$script,$route) => {
-			$name_base = $path.basename($p.name,'.html');
+			$name_base = _path.basename($p.name,'.html');
 			$name_page = 'page-' + $name_base; // 取得文件名
 			$html_pages.push('<script type="text/html" id="'+ $name_page +'">\n'+ $template.trim() +'\n</script>\n'); // 缓存组件模板资源
 			$js_pages.push('$yivue_pages["'+ $name_page +'"] = ' + $script.trim().replace(/\^\-\^/gi,($m,$n) => {return $name_page;}) + '\n\n'); // 缓存组件脚本资源
 			$js_routes.push($route.trim().replace(/\^\-\^/gi,($_,$n) => {return $name_base;}) + '\n'); // 缓存路由脚本资源
 		});
-		console.log($ysc('[FY]' + name + ' [FP]page [FG] ' + $p.name + '[FW] 完成...[E]'));
+		console.log(_ysc('[FY]' + name + ' [FP]page [FG] ' + $p.name + '[FW] 完成...[E]'));
 	}
 
 	if($check_data === false){
@@ -184,22 +184,22 @@ for(let $prop of $config_data){
 		break;
 	}
 
-	$fs.writeFileSync($path.join($dist_dir,component_file),'var $yivue_components = {};\n\n' + $js_components.join('')); // 生成组件文件
-	$fs.writeFileSync($path.join($dist_dir,page_file),'var $yivue_pages = {};\n\n' + $js_pages.join('')); // 生成组件文件
-	$fs.writeFileSync($path.join($dist_dir,route_file),'var $yivue_routes = [\n' + $js_routes.join(',') + '\n]'); // 生成路由文件
-	$data_file = $fs.readFileSync($path.join($from_html),{encoding:'utf8'}); // 读 html 模板文件
+	_fs.writeFileSync(_path.join($dist_dir,component_file),'var $yivue_components = {};\n\n' + $js_components.join('')); // 生成组件文件
+	_fs.writeFileSync(_path.join($dist_dir,page_file),'var $yivue_pages = {};\n\n' + $js_pages.join('')); // 生成组件文件
+	_fs.writeFileSync(_path.join($dist_dir,route_file),'var $yivue_routes = [\n' + $js_routes.join(',') + '\n]'); // 生成路由文件
+	$data_file = _fs.readFileSync(_path.join($from_html),{encoding:'utf8'}); // 读 html 模板文件
 	$data_index = $data_file.
 		replace(/\<\!\-\-\[\:yivue_components\]\-\-\>/gi,$html_components.join('')).
 		replace(/\<\!\-\-\[\:yivue_pages\]\-\-\>/gi,$html_pages.join('')); // 替换 html 模板文件占位符
-	$fs.writeFileSync($path.join($to_html),$data_index); // 生成首页文件
-	$data_file = $fs.readFileSync($path.join($from_index),{encoding:'utf8'}); // 读 index.js 模板文件
-	$fs.writeFileSync($path.join($to_index),$data_file); // 生成 index.js 文件
-	$data_file = $fs.readFileSync($path.join($from_data),{encoding:'utf8'}); // 读 data.js 模板文件
-	$fs.writeFileSync($path.join($to_data),$data_file); // 生成 data.js 文件
-	
+	_fs.writeFileSync(_path.join($to_html),$data_index); // 生成首页文件
+	$data_file = _fs.readFileSync(_path.join($from_index),{encoding:'utf8'}); // 读 index.js 模板文件
+	_fs.writeFileSync(_path.join($to_index),$data_file); // 生成 index.js 文件
+	$data_file = _fs.readFileSync(_path.join($from_data),{encoding:'utf8'}); // 读 data.js 模板文件
+	_fs.writeFileSync(_path.join($to_data),$data_file); // 生成 data.js 文件
+
 	if($check_success === false){
-		console.log($ysc(name + ' [FR]处理失败...[E]\n'));
+		console.log(_ysc(name + ' [FR]处理失败...[E]\n'));
 	}else{
-		console.log($ysc(name + ' [FG]处理完成...[E]\n'));
+		console.log(_ysc(name + ' [FG]处理完成...[E]\n'));
 	}
 }

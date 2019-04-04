@@ -23,5 +23,6 @@
   "bugs": {
     "url": "https://github.com/chenbimo/yivue/issues"
   },
-  "homepage": "https://github.com/chenbimo/yivue#readme"
+  "homepage": "https://github.com/chenbimo/yivue#readme",
+  "dependencies": {}
 }
