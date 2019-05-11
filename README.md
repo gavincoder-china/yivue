@@ -1,7 +1,6 @@
 # yivue
 用简单易懂的方式，开发基于VUE的单页应用。
 
-/*
 * [名称] yivue(易VUE)
 * [用途] 使用简单易懂的方式开发VUE单页应用的构建处理工具。
 * [作者] 陈随易
@@ -23,7 +22,8 @@
 *
 * [示例]
 *
-* {
+```javascript 
+{
 	name:'admin',
 	src_dir:'.',
 	component_dir:'./components',
@@ -35,6 +35,7 @@
 	route_file:'routes.js',
 	to_html:'index.html'
  }
+```
 *
 * [使用方式]
 * [安装] npm install -g yivue
@@ -48,8 +49,8 @@
 * 此占位符只有 <!--[:components]--> 和 <!--[:pages]--> 两种
 *
 * [效果]
-*
-* 源码目录
+```bash
+源码目录
 	├── components
 	│   ├── component1.html
 	│   └── component2.html
@@ -57,9 +58,11 @@
 	│   ├── page1.html
 	│   └── page2.html
 	└── tpl.html
-
 	2 directories, 5 files
+```
+
 * [tpl.html单页模板文件]--------------------------------------------------------------------------------
+```html
 	<!DOCTYPE HTML>
 	<html>
 		<head>
@@ -84,8 +87,9 @@
 		<script src="/admin/routes.js"></script>
 		<script src="/admin/index.js"></script>
 	</html>
-
+```
 * [pages 目录下的页面文件 page1.html]------------------------------------------------------------------
+```javascript	
 	<template>
 		<div>page1</div>
 	</template>
@@ -98,8 +102,9 @@
 		template:$id('^-^')
 	}
 	</script>
-
+```
 * [pages 目录下的页面文件 page2.html]-----------------------------------------------------------------
+```javascript
 	<template>
 		<div>page2</div>
 	</template>
@@ -112,8 +117,9 @@
 		template:$id('^-^')
 	}
 	</script>
-
+```
 * [components 目录下的组件页面 component1.html]-------------------------------------------------------
+```javascript
 	<template>
 	<div class="top">component1</div>
 	</template>
@@ -129,8 +135,9 @@
 		template:$id('^-^')
 	});
 	</script>
-
+```
 * [components 目录下的组件页面 component2.html]-------------------------------------------------------
+```javascript
 	<template>
 	<div class="top">component2</div>
 	</template>
@@ -146,10 +153,11 @@
 		template:$id('^-^')
 	});
 	</script>
-
+```
 * [生成以下文件]--------------------------------------------------------------------------------------
 * [components.js 组件脚本文件]------------------------------------------------------------------------
 
+```javascript
   // component-component1
 	Vue.component('component-component1',{
 		data:function(){
@@ -169,8 +177,9 @@
 		},
 		template:$id('component-component2')
 	});
-
+```
 * [pages.js 页面脚本文件]----------------------------------------------------------------------------
+```javascript
 	Pages["page-page1"] = {
 		data:{
 
@@ -184,8 +193,9 @@
 		},
 		template:$id('page-page2')
 	}
-
+```
 * [index.html 单页文件]------------------------------------------------------------------------------
+```html
 	<!DOCTYPE HTML>
 	<html>
 		<head>
@@ -220,4 +230,4 @@
 		<script src="/admin/routes.js"></script>
 		<script src="/admin/index.js"></script>
 	</html>
-*/
+```
