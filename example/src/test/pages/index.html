@@ -1,0 +1,33 @@
+<!-- 模板 -->
+<template>
+	<div class="body" id="body">
+		index
+	</div>
+</template>
+
+<!-- 页面 -->
+<script type="text/javascript" yv-type="text/page">
+	var page = {
+		data: function () {
+			return {
+
+			}
+		},
+		template: document.getElementById('^-^').innerHTML
+	}
+</script>
+
+<!-- 路由 -->
+<script type="text/javascript" yv-type="text/route">
+	var route = {
+		path: '/^-^',
+		name: '^-^',
+		components: {
+			'head': yivue.components['component-head'],
+			'menu': yivue.components['component-menu'],
+			'foot': yivue.components['component-foot'],
+			'body': yivue.pages['page-^-^']
+		}
+	}
+
+</script>

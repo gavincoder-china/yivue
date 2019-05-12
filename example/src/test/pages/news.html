@@ -1,0 +1,30 @@
+<template>
+	<div class="body" id="body">
+		news
+	</div>
+</template>
+
+<script type="text/javascript" yv-type="text/page">
+	var page = {
+		data: function () {
+			return {
+
+			}
+		},
+		template: document.getElementById('^-^').innerHTML
+	}
+</script>
+
+<script type="text/javascript" yv-type="text/route">
+	var route = {
+		path: '/^-^',
+		name: '^-^',
+		components: {
+			'head': yivue.components['component-head'],
+			'menu': yivue.components['component-menu'],
+			'foot': yivue.components['component-foot'],
+			'body': yivue.pages['page-^-^']
+		}
+	}
+
+</script>
