@@ -2,20 +2,25 @@
 <html>
 
 <head>
-	<title>yivue demo</title>
-	<meta charset="utf-8" />
-	<meta name="viewport"
-		content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-	<link rel="stylesheet" type="text/css" href="../public/css/yivue.css">
+    <title>yivue demo</title>
+    <!-- 字符编码 -->
+    <meta charset="utf-8" />
+    <!-- 适配手机端 -->
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <!-- pure css框架 -->
+    <link rel="stylesheet" type="text/css" href="../public/lib/css/pure.min.css">
+    <!-- 自定义 css 样式 -->
+    <link rel="stylesheet" type="text/css" href="../public/css/yivue.css">
 </head>
 
 <body>
-	<div class="YiVue" id="YiVue">
-		<router-view name="head"></router-view>
-		<router-view name="menu"></router-view>
-		<router-view name="body"></router-view>
-		<router-view name="foot"></router-view>
-	</div>
+    <div class="YiVue" id="YiVue">
+        <router-view name="head"></router-view>
+        <router-view name="menu"></router-view>
+        <router-view name="body"></router-view>
+        <router-view name="foot"></router-view>
+    </div>
 </body>
 
 <!--[组件文件]-->
@@ -27,9 +32,9 @@
 <!--[页面文件]-->
 
 <!-- vue库 -->
-<script src="../public/lib/vue.min.js"></script>
+<script src="../public/lib/js/vue.min.js"></script>
 <!-- vue-router 路由库 -->
-<script src="../public/lib/vue-router.min.js"></script>
+<script src="../public/lib/js/vue-router.min.js"></script>
 <!-- 配置文件 -->
 <script src="config.js"></script>
 <!-- 组件资源 -->

@@ -1,30 +1,30 @@
 {
-  "name": "yivue",
-  "version": "3.0.0",
-  "description": "用简单易懂的方式，开发基于VUE的单页应用。",
-  "main": "yivue.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "bin": "yivue.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/chenbimo/yivue.git"
-  },
-  "keywords": [
-    "vue",
-    "vuejs",
-    "single",
-    "pages",
-    "yivue"
-  ],
-  "author": "chensuiyi",
-  "license": "GPL-3.0",
-  "bugs": {
-    "url": "https://github.com/chenbimo/yivue/issues"
-  },
-  "homepage": "https://github.com/chenbimo/yivue#readme",
-  "dependencies": {
-    "colors": "^1.3.3"
-  }
+    "name": "yivue",
+    "version": "3.0.1",
+    "description": "用简单易懂的方式，开发基于VUE的单页应用。",
+    "main": "yivue.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "bin": "yivue.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/chenbimo/yivue.git"
+    },
+    "keywords": [
+        "vue",
+        "vuejs",
+        "single",
+        "pages",
+        "yivue"
+    ],
+    "author": "chensuiyi",
+    "license": "GPL-3.0",
+    "bugs": {
+        "url": "https://github.com/chenbimo/yivue/issues"
+    },
+    "homepage": "https://github.com/chenbimo/yivue#readme",
+    "dependencies": {
+        "colors": "^1.3.3"
+    }
 }
