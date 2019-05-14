@@ -176,7 +176,6 @@ function yivue(){
 			break;
 		}
 
-		console.log('---------------------------------');
 		console.log(colors.cyan(name + ' 项目开始处理...'));
 		console.log('\n');
 
@@ -443,8 +442,20 @@ function yivue(){
 			console.log('\n');
 			console.log(colors.yellow(name + ' 项目处理完成...'));
 			console.log('---------------------------------');
+			console.log(colors.bgCyan(DateTime()));
+			console.log('---------------------------------');
 		}
 	}
+}
+function DateTime(){
+	var t = new Date();
+	var Y = t.getFullYear();
+	var M = ('00' + (t.getMonth() + 1)).substr(-2);
+	var D = ('00' + t.getDate()).substr(-2);
+	var H = ('00' + t.getHours()).substr(-2);
+	var I = ('00' + t.getMinutes()).substr(-2);
+	var S = ('00' + t.getSeconds()).substr(-2);
+	return Y + '-' + M + '-' + D + ' ' + H + ':' + I + ':' + S;
 }
 function shellExec(){
 	if (shell.exec('yivue').code !== 0) {
