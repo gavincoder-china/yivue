@@ -13,9 +13,6 @@ const colors = require('colors/safe');
 // 引入文件监听模块
 const chokidar = require('chokidar');
 
-// 引入脚本执行模块
-const shell = require('shelljs');
-
 // 初始化配置参数 ==============================================================
 // 配置目录
 const config_dir = process.cwd();
@@ -457,17 +454,11 @@ function DateTime(){
 	var S = ('00' + t.getSeconds()).substr(-2);
 	return Y + '-' + M + '-' + D + ' ' + H + ':' + I + ':' + S;
 }
-function shellExec(){
-	if (shell.exec('yivue').code !== 0) {
-		shell.echo('执行 yivue 命令失败');
-		shell.exit(1);
-	}
-}
 yivue();
 let watcher = chokidar.watch(path.join(config_dir,'src'), {
 	ignored: /(^|[\/\\])\../
 }).on('unlink',path => {
-	shellExec();
+	yivue();
 }).on('change',path => {
-	shellExec();
+	yivue();
 });
