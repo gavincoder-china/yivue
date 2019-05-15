@@ -1,42 +1,223 @@
 /*全局设置*/
-*{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-tap-highlight-color:rgba(0,0,0,0);}
-html,body,div,a,span,img,form,input,select,option,textarea,button::after,::before{padding:0;border:0;margin:0;outline:0;box-sizing:border-box;}
-html,body{height:100%;}
-body{font-size:14px;overflow:hidden;font-family:"Microsoft YaHei";}
-img,span,::before,::after{display:inline-block;}
-a{text-decoration:none;color:inherit;}
-a,span{display:inline-block;}
+* {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+html,
+body,
+div,
+a,
+span,
+img,
+form,
+input,
+select,
+option,
+textarea,
+button::after,
+::before {
+    padding: 0;
+    border: 0;
+    margin: 0;
+    outline: 0;
+    box-sizing: border-box;
+}
+html,
+body {
+    height: 100%;
+}
+body {
+    font-size: 14px;
+    overflow: hidden;
+    font-family: "Microsoft YaHei";
+}
+img,
+span,
+::before,
+::after {
+    display: inline-block;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+a,
+span {
+    display: inline-block;
+}
 
 /*全局盒子*/
-.YiVue{position:absolute;top:0;right:0;bottom:0;left:0;overflow:hidden;}
+.YiVue {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+}
+
+/* 页面盒子 */
 
 /*头部*/
-.head{display:flex;justify-content:space-between;position:absolute;top:0;right:0;left:0;height:50px;padding:0 10px;background-color:#333;z-index:1999;color:#fff;border-bottom:1px solid #ddd;}
-.head .left{flex: 0 0 auto;padding-right:10px;}
-.head .logo{display:flex;justify-content:flex-start;align-items:center;flex: 1 1 100%;color:#bbb286;font-size:18px;font-weight:bold;}
-.head .logo img{height:30px;}
-.head .right{display:flex;align-items:center; flex: 0 0 auto;padding-left:10px;}
+.head {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 50px;
+    padding: 0 10px;
+    background-color: #333;
+    z-index: 1999;
+    color: #fff;
+    border-bottom: 1px solid #ddd;
+}
+.head .left {
+    flex: 0 0 auto;
+    padding-right: 10px;
+}
+.head .logo {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex: 1 1 100%;
+    color: #bbb286;
+    font-size: 18px;
+    font-weight: bold;
+}
+.head .logo img {
+    height: 30px;
+}
+.head .right {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    padding-left: 10px;
+}
 .head .left,
-.head .right{display:flex;align-items:center;justify-content:center; flex:0 0 auto;}
-.head .menu-icon{display:flex;justify-content:center;align-items:center;flex:0 0 auto;padding:0 8px;height:30px;border-radius:8px;cursor:pointer;border:2px solid #b5aa75;font-size:12px;background-color:#f54024;}
+.head .right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+}
+.head .menu-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 0 0 auto;
+    padding: 0 8px;
+    height: 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid #b5aa75;
+    font-size: 12px;
+    background-color: #f54024;
+}
 
-/*菜单*/ 
-.menu{position:absolute;top:50px;left:-150px;bottom:0;width:150px;border-right:2px solid #ccc;background-color:#eee;z-index:999;transition:all 0.2s;}
-.menu{left:0;}
-.menu .switch{display:flex;align-items:center;justify-content:space-between;height:40px;padding:0 10px;}
-.menu .switch .tab{display:flex;align-items:center;justify-content:center;flex:0 0 48%;height:30px;border:2px solid #a09976;background-color:#a2a2a2;color:#fff;padding:4px 10px;cursor:pointer;}
-.menu .switch .tab.active{background-color:#b9b075;}
+/*菜单*/
+.menu {
+    position: absolute;
+    top: 50px;
+    left: -150px;
+    bottom: 0;
+    width: 150px;
+    border-right: 2px solid #ccc;
+    background-color: #eee;
+    z-index: 999;
+    transition: all 0.2s;
+}
+.menu {
+    left: 0;
+}
+.menu .switch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 40px;
+    padding: 0 10px;
+}
+.menu .switch .tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 48%;
+    height: 30px;
+    border: 2px solid #a09976;
+    background-color: #a2a2a2;
+    color: #fff;
+    padding: 4px 10px;
+    cursor: pointer;
+}
+.menu .switch .tab.active {
+    background-color: #b9b075;
+}
 
 /*菜单手风琴*/
-.accordion{}
-.accordion .ul{}
-.accordion .title{height:40px;line-height:40px;padding:0 10px;border-bottom:1px solid #ddd;cursor:pointer;color:#1a88ab;font-weight:bold;}
-.accordion .ull{}
-.accordion .li{position:relative;height:30px;line-height:30px;color:#555;background-color:#f5f5f5;padding-left:20px;padding-right:10px;border-bottom:1px solid #ddd;cursor:pointer;}
-.accordion .li.active::after{content:"";position:absolute;top:10px;right:-7px;height:8px;width:8px;background-color:#f5f5f5;transform:rotate(45deg);border-top:2px solid #ccc;border-right:2px solid #ccc;}
+.accordion .title {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    color: #1a88ab;
+    font-weight: bold;
+}
+.accordion .li {
+    position: relative;
+    height: 30px;
+    line-height: 30px;
+    color: #555;
+    background-color: #f5f5f5;
+    padding-left: 20px;
+    padding-right: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+.accordion .li.active::after {
+    content: "";
+    position: absolute;
+    top: 10px;
+    right: -7px;
+    height: 8px;
+    width: 8px;
+    background-color: #f5f5f5;
+    transform: rotate(45deg);
+    border-top: 2px solid #ccc;
+    border-right: 2px solid #ccc;
+}
 
 /*正文*/
-.body{display:flex;justify-content:center;align-items:center;font-size:60px;font-weight:bold;position:absolute;top:50px;left:150px;right:0;bottom:150px;}
+.body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 60px;
+    font-weight: bold;
+    position: absolute;
+    top: 50px;
+    left: 150px;
+    right: 0;
+    bottom: 150px;
+}
 
 /*底部*/
-.foot{display:flex;justify-content:center;align-items:center;font-size:30px;font-weight:bold;color:#888;position:absolute;left:150px;bottom:0;height:150px;right:0;border-top:1px solid #ddd;background-color:#f5f5f5;}
+.foot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    font-weight: bold;
+    color: #888;
+    position: absolute;
+    left: 150px;
+    bottom: 0;
+    height: 150px;
+    right: 0;
+    border-top: 1px solid #ddd;
+    background-color: #f5f5f5;
+}

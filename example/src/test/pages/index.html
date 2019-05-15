@@ -1,7 +1,10 @@
 <!-- 模板 -->
 <template>
-    <div class="body" id="body">
-        index
+    <div class="page" id="page">
+        <component-head></component-head>
+        <component-menu></component-menu>
+        <component-foot></component-foot>
+        <div class="body" id="body">{{ text }}</div>
     </div>
 </template>
 
@@ -10,8 +13,13 @@
     var page = {
         data: function () {
             return {
-
+                text:'index'
             }
+        },
+        components:{
+            'component-head':yivue.components['component-head'],
+            'component-menu':yivue.components['component-menu'],
+            'component-foot':yivue.components['component-foot']
         },
         template: document.getElementById('^-^').innerHTML
     }
@@ -22,12 +30,7 @@
     var route = {
         path: '/^-^',
         name: '^-^',
-        components: {
-            'head': yivue.components['component-head'],
-            'menu': yivue.components['component-menu'],
-            'foot': yivue.components['component-foot'],
-            'body': yivue.pages['page-^-^']
-        }
+        component:yivue.pages['page-^-^']
     }
 
 </script>
