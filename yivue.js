@@ -292,7 +292,7 @@ function yivue() {
                             return "{";
                         })
                         .replace(/\^\-\^/gi, (_, n) => {
-                            return name_component;
+                            return name_base;
                         }) +
                     "\n\n";
                 js_components.push(tmp);
@@ -377,7 +377,7 @@ function yivue() {
                             return "{";
                         })
                         .replace(/\^\-\^/gi, (_, n) => {
-                            return name_page;
+                            return name_base;
                         }) +
                     "\n\n";
                 // 缓存页面脚本资源
