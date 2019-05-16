@@ -369,8 +369,7 @@ function yivue(){
 			});
 			// 正则查找路由脚本
 			data_html.replace(regx_route, (match, route) => {
-				// 临时变量
-				console.log(route); 
+				// 临时变量 
 				let tmp = 'yivue.routes.push(' +
 					route
 						.trim()
