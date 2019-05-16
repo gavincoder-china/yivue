@@ -367,17 +367,23 @@ function yivue(){
 				// 缓存页面脚本资源
 				js_pages.push(tmp);
 			});
-
 			// 正则查找路由脚本
 			data_html.replace(regx_route, (match, route) => {
 				// 临时变量
+				console.log(route); 
 				let tmp = 'yivue.routes.push(' +
 					route
 						.trim()
 						.replace(/^([\S\s]+?)\{/gi, (_, s) => {
+							// 去掉变量赋值
 							return '{';
 						})
+						.replace(/\}\;$/gi,(_,n) => {
+							// 去掉路由结束扩后后面的分号
+							return '}';
+						})
 						.replace(/\^\-\^/gi, (_, n) => {
+							// 替换占位符
 							return name_base;
 						}) + ')\n\n';
 				// 缓存页面路由资源
