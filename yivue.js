@@ -39,7 +39,7 @@ function yivue() {
         // 单组件、单页面的js脚本
 
         // 数据文件
-        let js_datas = [];
+        // let js_datas = [];
 
         // 组件文件
         let js_components = [];
@@ -49,6 +49,9 @@ function yivue() {
 
         // 路由文件
         let js_routes = [];
+
+        // css文件
+        let css_array = [];
 
         // 正则字符
 
@@ -79,7 +82,7 @@ function yivue() {
         let files_all = null;
 
         // 过滤之后的 html 模板文件
-        let files_html = null;
+        let files_filter = null;
 
         // 状态变量
 
@@ -135,6 +138,9 @@ function yivue() {
             // 页面目录
             pages_dir = "pages",
 
+            // css目录
+            css_dir = 'css',
+
             // 生成的数据文件默认名称
             data_file = "datas.js",
 
@@ -146,6 +152,9 @@ function yivue() {
 
             // 生成的路由文件默认名称
             route_file = "routes.js",
+
+            // 生成的样式文件默认名称
+            css_file = "bundle.css",
 
             // 来源模板默认名称
             from_html = "tpl.html",
@@ -185,6 +194,9 @@ function yivue() {
 
         // 页面目录
         pages_dir = path.join(src_dir, pages_dir);
+
+        // css目录
+        css_dir = path.join(src_dir, css_dir);
 
         // 生成的资源目录
         dist_dir = path.join(config_dir, dist_dir);
@@ -233,12 +245,12 @@ function yivue() {
         files_all = fs.readdirSync(components_dir, { withFileTypes: true });
 
         // 过滤所有非 .html 文件
-        files_html = files_all.filter(v => {
+        files_filter = files_all.filter(v => {
             return v.isFile() && path.extname(v.name) === ".html";
         });
 
         // 循环读取所有组件数据
-        for (let p of files_html) {
+        for (let p of files_filter) {
             // 文件名称(不含扩展名)
             let name_base = path.basename(p.name, ".html");
 
@@ -311,12 +323,12 @@ function yivue() {
         files_all = fs.readdirSync(pages_dir, { withFileTypes: true });
 
         // 过滤所有非 .html 文件
-        files_html = files_all.filter(v => {
+        files_filter = files_all.filter(v => {
             return v.isFile() && path.extname(v.name) === ".html";
         });
 
         // 循环读取所有页面数据
-        for (let p of files_html) {
+        for (let p of files_filter) {
             // 文件名称(不含扩展名)
             let name_base = path.basename(p.name, ".html");
 
@@ -411,6 +423,27 @@ function yivue() {
             console.log(colors.green(name + " page " + p.name + " 处理完成..."));
         }
 
+        // 开始处理页面资源 ======================================================
+        // 获取所有文件
+        files_all = fs.readdirSync(css_dir, { withFileTypes: true });
+
+        // 过滤所有非 .css 文件
+        files_filter = files_all.filter(v => {
+            return v.isFile() && path.extname(v.name) === ".css";
+        });
+
+        // 循环读取所有css
+        for (let p of files_filter) {
+            // 当前css路径
+            let path_css = path.join(css_dir, p.name);
+
+            // 当前组件页面数据
+            let data_css = fs.readFileSync(path_css, { encoding: "utf8" });
+
+            // 推送到数组
+            css_array.push(data_css);
+        };
+
         // 数据判断中断
         if (check_data === false) {
             check_success = false;
@@ -431,6 +464,9 @@ function yivue() {
         // 生成路由文件
         fs.writeFileSync(path.join(dist_dir, route_file), js_routes.join(""));
 
+        // 生成样式文件
+        fs.writeFileSync(path.join(dist_dir, css_file), css_array.join(""));
+
         // 读 html 模板文件
         let data_from_html = fs.readFileSync(path.join(from_html), { encoding: "utf8" });
 
@@ -449,7 +485,7 @@ function yivue() {
         // 读 config.js 模板文件
         let data_from_config = fs.readFileSync(path.join(from_config), { encoding: "utf8" });
 
-        // 生成 data.js 文件
+        // 生成 config.js 文件
         fs.writeFileSync(path.join(to_config), data_from_config);
 
         // 成功判断
