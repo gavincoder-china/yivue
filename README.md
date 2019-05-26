@@ -1,4 +1,4 @@
-## YIVUE
+# YIVUE
 
     用简单易懂的方式，开发基于VUE的单页应用。
 
@@ -6,56 +6,57 @@
 | ---------- | ---------------------------------------------------- |
 | 项目       | yivue                                                |
 | 用途       | 使用简单易懂的方式开发 VUE 单页应用的构建处理工具。  |
-| 版本       | 3.2.6                                                |
-| 更新时间   | 2019 年 05 月 19 日                                  |
+| 版本       | 3.3.0                                                |
+| 更新时间   | 2019 年 05 月 26 日                                  |
 | 作者       | 陈随易                                               |
 | 邮箱       | bimostyle@qq.com                                     |
 | 知乎       | [知乎陈随易](https://www.zhihu.com/people/chensuiyi) |
 | 全栈交流群 | 147076513                                            |
 
-## 使用方式
+# 使用方式
 
-### 全局安装`yiuve`到本地
+## 全局安装`yiuve`到本地
 
     npm install -g yivue
 
-#### 结构如下
+## 下载yivue-example项目基础模板
 
-![安装yivue](docs/1.png)
+```bash
+git clone https://github.com/chenbimo/yivue-example.git
+```
+或者
+```bash
+npm install yivue-example
+```
 
-### 复制本模块下的`example`示例项目到任意自己喜欢的目录下。
-
-    这里，我放到了D盘根目录下
-
-![复制example目录](docs/2.png)
-
-### 项目组织结构一览
+## 基础模板项目组织结构一览
 
 ![组织结构](docs/3.png)
 
 src 目录下的每个直接子目录，都是一个单独的单页项目。如果要同时开发后台单页，官网单页，用户后台单页等等多个单页项目，直接复制`src`目录下的`test`目录，并修改文件名，配置到`yivue.config.js`文件中即可。
 
-### 直接在本目录下执行`yivue`命令。
+## 直接在本目录下执行`yivue`命令。
 
     yivue
 
-#### 结果如下
+## 结果如下
 
 ![组织结构](docs/4.png)
 
-### 查看当前的目录结构
+## 查看当前的目录结构
 
 ![组织结构](docs/5.png)
 
-### 用浏览器打`开index.html`文件
+## 用浏览器打`开index.html`文件,自行体会
 
 ![组织结构](docs/6.png)
 
-### 生成单页项目结构
+### 生成的单页项目结构
 
 ![组织结构](docs/7.png)
 
     没错！！！就是这么简简单单的结构，没有任何其他多余的东西！！！
+    你以前需要写的几十上百个html页面文件和css样式和js脚本文件，现在，统统都变成这几个文件！！！
 
 ## 源代码编写
 
@@ -134,32 +135,32 @@ src 目录下的每个直接子目录，都是一个单独的单页项目。如�
 <!--[组件文件]-->
 <script type="text/html" id="component-foot">
     <div class="foot">
-    		<div>全栈交流群：147076513</div>
-    	</div>
+    	<div>全栈交流群：147076513</div>
+    </div>
 </script>
 <script type="text/html" id="component-head">
     <div class="head">
-    		<div class="left">
-    			<div class="menu-icon left-menu">菜单</div>
-    		</div>
-    		<div class="logo">YIVUE</div>
-    		<div class="right">
-    			<div class="menu-icon right-menu">首页</div>
-    		</div>
+    	<div class="left">
+    		<div class="menu-icon left-menu">菜单</div>
     	</div>
+    	<div class="logo">YIVUE</div>
+    	<div class="right">
+    		<div class="menu-icon right-menu">首页</div>
+    	</div>
+    </div>
 </script>
 <script type="text/html" id="component-menu">
     <div class="menu">
-    		<div class="accordion">
-    			<div class="ul" v-for="ul in lists">
-    				<div class="title" v-on:click="Toggle(ul)">{{ul.title}}</div>
-    				<div class="ull" v-show="ul.isopen">
-    					<div class="li" v-bind:class="{active:li.active}" v-for="li in ul.ull" v-on:click="GoHref(li)">
-    						{{li.value}}</div>
-    				</div>
-    			</div>
-    		</div>
-    	</div>
+        <div class="accordion">
+            <div class="ul" v-for="ul in lists">
+                <div class="title" v-on:click="Toggle(ul)">{{ul.title}}</div>
+                <div class="ull" v-show="ul.isopen">
+                    <div class="li" v-bind:class="{active:li.active}" v-for="li in ul.ull" v-on:click="GoHref(li)">
+                        {{li.value}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </script>
 
 <!--[组件文件]-->
@@ -172,10 +173,6 @@ src 目录下的每个直接子目录，都是一个单独的单页项目。如�
 ```javascript
 // 开始实例化VUE
 var vm = new Vue({
-    data: {
-        // 全局共享数据
-        globalData: {}
-    },
     router: new VueRouter({
         routes: yivue.routes
     })
@@ -222,7 +219,7 @@ yivue.routes.push({
         data: function() {
             return {};
         },
-        template: document.getElementById("^-^").innerHTML
+        template: document.getElementById("ddd").innerHTML
     };
 </script>
 ```
@@ -230,7 +227,7 @@ yivue.routes.push({
 -   `<template>`标签包裹普通的 html 页面文件。
 -   `script`必须写上`yv-type="text/component"`自定义类型，不然`yivue`不识别。
 -   脚本内的内容，如上所示，非常朴素的`vue`语法，不懂请去看 vue。
--   `^-^`是特殊的占位符，任何位置的`^-^`都会被替换成当前的文件名(不包括扩展名！！！)
+-   `ddd`是特殊的占位符，任何位置的`ddd`都会被替换成当前的文件名(不包括扩展名！！！)
 
 ### 页面文件`page.html`
 
@@ -248,20 +245,20 @@ yivue.routes.push({
         data: function() {
             return {};
         },
-        template: document.getElementById("^-^").innerHTML
+        template: document.getElementById("ddd").innerHTML
     };
 </script>
 
 <!-- 路由 -->
 <script type="text/javascript" yv-type="text/route">
     var route = {
-        path: "/^-^",
-        name: "^-^",
+        path: "/ddd",
+        name: "ddd",
         components: {
             head: yivue.components["component-head"],
             menu: yivue.components["component-menu"],
             foot: yivue.components["component-foot"],
-            body: yivue.pages["page-^-^"]
+            body: yivue.pages["page-ddd"]
         }
     };
 </script>

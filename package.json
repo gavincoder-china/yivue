@@ -1,6 +1,6 @@
 {
     "name": "yivue",
-    "version": "3.2.6",
+    "version": "3.3.0",
     "description": "用简单易懂的方式，开发基于VUE的单页应用。",
     "main": "yivue.js",
     "scripts": {
