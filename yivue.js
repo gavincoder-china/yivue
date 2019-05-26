@@ -28,10 +28,10 @@ const config_data = require(config_file);
 
 function yivue() {
     // 循环处理多个单页项目 =========================================================
-    for (let p of config_data) {
+    for (let prop of config_data) {
         // 如果状态为false，则跳过处理
         // 此参数可以过滤掉不需要打包的项目，增加性能
-        if (!p.status) {
+        if (!!prop.status) {
             continue;
         }
         // 为每个单页项目初始化相关变量 ==============================================
@@ -41,21 +41,24 @@ function yivue() {
         // 页面模板数组
         let html_pages = [];
 
+        // 页面css数组
+        let html_css = [];
+
         // 单组件、单页面的js脚本
 
-        // 数据文件
+        // 数据文件 - 保留
         // let js_datas = [];
 
-        // 组件文件
+        // 组件脚本文件
         let js_components = [];
 
-        // 页面文件
+        // 页面脚本文件
         let js_pages = [];
 
-        // 路由文件
+        // 路由脚本文件
         let js_routes = [];
 
-        // css文件
+        // 独立css合并文件
         let css_array = [];
 
         // 正则字符
@@ -66,11 +69,11 @@ function yivue() {
         // 正则字符-默认-结束
         let str_default_end = "[\"']?>([\\s\\S]+?)</script>";
 
-        // 模板正则字符
+        // 页面模板正则字符
         let str_template = "[\\s\\S]*<template>([\\s\\S]+?)</template>";
 
-        // 正则字符-数据
-        let str_data = str_default_start + "data" + str_default_end;
+        // 正则字符-数据 -保留
+        // let str_data = str_default_start + "data" + str_default_end;
 
         // 正则字符-组件
         let str_component = str_default_start + "component" + str_default_end;
@@ -80,6 +83,9 @@ function yivue() {
 
         // 正则字符-路由
         let str_route = str_default_start + "route" + str_default_end;
+
+        // 正则字符-css
+        let str_css = "[\\s\\S]*<style>([\\s\\S]+?)</style>";
 
         // 文件读取
 
@@ -100,31 +106,34 @@ function yivue() {
         // 检测文件是否存在状态
         let check_exists = true;
 
-        // 模板文件名占位符
-        let placeholder = "^-^";
+        // 模板文件名占位符 - 有bug，待定
+        // let placeholder = "^-^";
 
-        // 正则-模板
-        let regx_placeholder = new RegExp(placeholder, "gi");
+        // 正则-模板 - 有bug，待定
+        // let regx_placeholder = new RegExp(placeholder, "gi");
 
-        // 正则-模板
+        // 正则-页面元素
         let regx_template = new RegExp(str_template, "gi");
 
-        // 正则-数据
-        let regx_data = new RegExp(str_data, "gi");
+        // 正则-数据 - 保留
+        // let regx_data = new RegExp(str_data, "gi");
 
-        // 正则-组件
+        // 正则-组件脚本
         let regx_component = new RegExp(str_component, "gi");
 
-        // 正则-页面
+        // 正则-页面脚本
         let regx_page = new RegExp(str_page, "gi");
 
-        // 正则-路由
+        // 正则-路由脚本
         let regx_route = new RegExp(str_route, "gi");
+
+        // 正则-css脚本
+        let regx_css = new RegExp(str_css, "gi");
 
         // 首页文件数据
 
         // 缓存首页页面数据
-        let data_index = "";
+        // let data_index = "";
 
         // 获取配置文件的参数 ==============================================
         let {
@@ -147,7 +156,7 @@ function yivue() {
             css_dir = "css",
 
             // 生成的数据文件默认名称
-            data_file = "datas.js",
+            // data_file = "datas.js",
 
             // 生成的组件文件默认名称
             component_file = "components.js",
@@ -178,7 +187,7 @@ function yivue() {
 
             // 目标配置文件
             to_config = "config.js"
-        } = p;
+        } = prop;
 
         // 是否填写项目名称
         if (!name) {
@@ -282,7 +291,7 @@ function yivue() {
                 break;
             }
 
-            // 正则查找模板数据
+            // 正则查找模板元素数据
             data_html.replace(regx_template, (match, template) => {
                 // 缓存组件模板资源
                 html_components.push(
@@ -296,7 +305,7 @@ function yivue() {
                 );
             });
 
-            // 正则查找组件数据
+            // 正则查找组件脚本数据
             data_html.replace(regx_component, (match, component) => {
                 // 缓存组件脚本资源
                 let tmp =
@@ -313,6 +322,17 @@ function yivue() {
                         }) +
                     "\n\n";
                 js_components.push(tmp);
+            });
+            console.log("处理css了");
+            // 正则查找组件css数据
+            data_html.replace(regx_css, (match, style) => {
+                console.dir(style);
+                // 缓存页面css资源
+                html_css.push(
+                    style.trim().replace(/\^\-\^/gi, (_, n) => {
+                        return "page-" + name_base;
+                    })
+                );
             });
             console.log(colors.green(name + " component " + p.name + " 处理完成..."));
         }
@@ -367,6 +387,13 @@ function yivue() {
                 break;
             }
 
+            // 检测是否有css - 可有可无
+            // if (!regx_css.test(data_html)) {
+            //     console.log(colors.red(name + " pages css " + p.name + " 未找到"));
+            //     check_data = false;
+            //     break;
+            // }
+
             // 正则查找页面模板数据
             data_html.replace(regx_template, (match, template) => {
                 // 缓存页面模板资源
@@ -400,6 +427,7 @@ function yivue() {
                 // 缓存页面脚本资源
                 js_pages.push(tmp);
             });
+
             // 正则查找路由脚本
             data_html.replace(regx_route, (match, route) => {
                 // 临时变量
@@ -424,11 +452,21 @@ function yivue() {
                 js_routes.push(tmp);
             });
 
+            // 正则查找页面css数据
+            data_html.replace(regx_css, (match, style) => {
+                // 缓存页面css资源
+                html_css.push(
+                    style.trim().replace(/\^\-\^/gi, (_, n) => {
+                        return "page-" + name_base;
+                    })
+                );
+            });
+
             // 打印日志
             console.log(colors.green(name + " page " + p.name + " 处理完成..."));
         }
 
-        // 开始处理页面资源 ======================================================
+        // 开始处理css资源 ======================================================
         // 获取所有文件
         files_all = fs.readdirSync(css_dir, { withFileTypes: true });
 
@@ -470,7 +508,7 @@ function yivue() {
         fs.writeFileSync(path.join(dist_dir, route_file), js_routes.join(""));
 
         // 生成样式文件
-        fs.writeFileSync(path.join(dist_dir, css_file), css_array.join(""));
+        fs.writeFileSync(path.join(dist_dir, css_file), [...css_array, ...html_css].join(""));
 
         // 读 html 模板文件
         let data_from_html = fs.readFileSync(path.join(from_html), { encoding: "utf8" });
