@@ -29,6 +29,11 @@ const config_data = require(config_file);
 function yivue() {
     // 循环处理多个单页项目 =========================================================
     for (let p of config_data) {
+        // 如果状态为false，则跳过处理
+        // 此参数可以过滤掉不需要打包的项目，增加性能
+        if (!p.status) {
+            continue;
+        }
         // 为每个单页项目初始化相关变量 ==============================================
         // 组件模板数组
         let html_components = [];
@@ -139,7 +144,7 @@ function yivue() {
             pages_dir = "pages",
 
             // css目录
-            css_dir = 'css',
+            css_dir = "css",
 
             // 生成的数据文件默认名称
             data_file = "datas.js",
@@ -442,7 +447,7 @@ function yivue() {
 
             // 推送到数组
             css_array.push(data_css);
-        };
+        }
 
         // 数据判断中断
         if (check_data === false) {
