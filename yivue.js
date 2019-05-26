@@ -13,6 +13,12 @@ const colors = require("colors/safe");
 // 引入文件监听模块
 const chokidar = require("chokidar");
 
+// 引入工具函数
+const tool = require("./tool");
+
+// 引入less
+const lessCompile = require("./lessCompile");
+
 // 初始化配置参数 ==============================================================
 // 配置目录
 const config_dir = process.cwd();
@@ -26,7 +32,7 @@ if (!fs.existsSync(config_file)) {
 // 配置数据
 const config_data = require(config_file);
 
-function yivue() {
+async function yivue() {
     // 循环处理多个单页项目 =========================================================
     for (let prop of config_data) {
         // 如果状态为false，则跳过处理
@@ -85,7 +91,7 @@ function yivue() {
         let str_route = str_default_start + "route" + str_default_end;
 
         // 正则字符-css
-        let str_css = "[\\s\\S]*<style>([\\s\\S]+?)</style>";
+        let str_css = "[\\s\\S]*<style.*>([\\s\\S]+?)</style>";
 
         // 文件读取
 
@@ -196,9 +202,6 @@ function yivue() {
             break;
         }
 
-        console.log(colors.cyan(name + " 项目开始处理..."));
-        console.log("\n");
-
         // 根据参数生成目录和路径 ===================================================
         // 源码目录
         src_dir = path.join(config_dir, src_dir);
@@ -243,7 +246,7 @@ function yivue() {
 
         for (let prop of check_params) {
             if (!fs.existsSync(prop)) {
-                console.log(colors.red(name + " " + prop + " 不存在"));
+                console.log(colors.red(`项目名称<${name}>  类型<目录>  目录地址<${prop}>  不存在...`));
                 check_exists = false;
                 break;
             }
@@ -280,63 +283,51 @@ function yivue() {
 
             // 检测是否有模板数据
             if (!regx_template.test(data_html)) {
-                console.log(colors.red(name + " components template " + prop.name + " 未找到"));
+                console.log(colors.red(`项目名称<${name}>  类型<组件/模板>  文件名<${prop.name}>  未找到...`));
                 check_data = false;
                 break;
             }
 
             // 检测是否有组件脚本
             if (!regx_component.test(data_html)) {
-                console.log(colors.red(name + " components component " + prop.name + " 未找到"));
+                console.log(colors.red(`项目名称<${name}>  类型<组件/脚本>  文件名<${prop.name}>  未找到...`));
                 check_data = false;
                 break;
             }
 
             // 正则查找模板元素数据
             data_html.replace(regx_template, (match, template) => {
+                template = template.trim().replace(regx_placeholder, (_, n) => {
+                    return name_base;
+                });
                 // 缓存组件模板资源
-                html_components.push(
-                    '<script type="text/html" id="' +
-                        name_component +
-                        '">\n' +
-                        template.trim().replace(regx_placeholder, (_, n) => {
-                            return name_base;
-                        }) +
-                        "\n</script>\n"
-                );
+                html_components.push(`<script type="text/html" id="${name_component}">\n${template}\n</script>\n`);
             });
 
             // 正则查找组件脚本数据
             data_html.replace(regx_component, (match, component) => {
+                component = component
+                    .trim()
+                    .replace(/^([\S\s]+?)\{/gi, (_, s) => {
+                        return "{";
+                    })
+                    .replace(regx_placeholder, (_, n) => {
+                        return name_base;
+                    });
                 // 缓存组件脚本资源
-                let tmp =
-                    'yivue.components["' +
-                    name_component +
-                    '"] = ' +
-                    component
-                        .trim()
-                        .replace(/^([\S\s]+?)\{/gi, (_, s) => {
-                            return "{";
-                        })
-                        .replace(regx_placeholder, (_, n) => {
-                            return name_base;
-                        }) +
-                    "\n\n";
-                js_components.push(tmp);
+                js_components.push(`yivue.components["${name_component}"] = ${component}\n\n`);
             });
-            // 正则查找组件css数据
-            data_html.replace(regx_css, (match, style) => {
-                // 缓存页面css资源
-                html_css.push(
-                    "\n" +
-                        style.trim().replace(regx_placeholder, (_, n) => {
-                            return "component-" + name_base;
-                        })
-                );
-            });
-            console.log(colors.green(name + " component " + prop.name + " 处理完成..."));
-        }
 
+            // 正则查找组件css数据
+            await data_html.replace(regx_css, (match, style) => {
+                style = style.trim().replace(regx_placeholder, (_, n) => {
+                    return "component-" + name_base;
+                });
+                // 缓存页面css资源
+                html_css.push(`\n${style}\n`);
+            });
+            console.log(colors.green(`项目名称<${name}>  类型<组件>  文件名<${prop.name}>  处理完成...`));
+        }
         // 数据存在性判断
         if (check_data === false) {
             check_success = false;
@@ -368,112 +359,94 @@ function yivue() {
 
             // 检测是否有模板
             if (!regx_template.test(data_html)) {
-                console.log(colors.red(name + " pages template " + prop.name + " 未找到"));
+                console.log(colors.red(`项目名称<${name}>  类型<模板>  文件名<${prop.name}>  未找到...`));
                 check_data = false;
                 break;
             }
 
             // 检测是否有页面
             if (!regx_page.test(data_html)) {
-                console.log(colors.red(name + " pages page " + prop.name + " 未找到"));
+                console.log(colors.red(`项目名称<${name}>  类型<页面脚本>  文件名<${prop.name}>  未找到...`));
                 check_data = false;
                 break;
             }
 
             // 检测是否有路由
             if (!regx_route.test(data_html)) {
-                console.log(colors.red(name + " pages route " + prop.name + " 未找到"));
+                console.log(colors.red(`项目名称<${name}>  类型<页面路由>  文件名<${prop.name}>  未找到...`));
                 check_data = false;
                 break;
             }
 
-            // 检测是否有css - 可有可无
-            // if (!regx_css.test(data_html)) {
-            //     console.log(colors.red(name + " pages css " + prop.name + " 未找到"));
-            //     check_data = false;
-            //     break;
-            // }
-
             // 正则查找页面模板数据
             data_html.replace(regx_template, (match, template) => {
+                template = template.trim().replace(regx_placeholder, (_, n) => {
+                    return name_base;
+                });
                 // 缓存页面模板资源
-                html_pages.push(
-                    '<script type="text/html" id="' +
-                        name_page +
-                        '">\n' +
-                        template.trim().replace(regx_placeholder, (_, n) => {
-                            return name_base;
-                        }) +
-                        "\n</script>\n"
-                );
+                html_pages.push(`<script type="text/html" id="${name_page}">\n${template}\n</script>\n`);
             });
 
             // 正则查找页面脚本
             data_html.replace(regx_page, (match, page) => {
-                // 临时变量
-                let tmp =
-                    'yivue.pages["' +
-                    name_page +
-                    '"] = ' +
-                    page
-                        .trim()
-                        .replace(/^([\S\s]+?)\{/gi, (_, s) => {
-                            return "{";
-                        })
-                        .replace(regx_placeholder, (_, n) => {
-                            return name_base;
-                        }) +
-                    "\n\n";
+                page = page
+                    .trim()
+                    .replace(/^([\S\s]+?)\{/gi, (_, s) => {
+                        return "{";
+                    })
+                    .replace(regx_placeholder, (_, n) => {
+                        return name_base;
+                    });
                 // 缓存页面脚本资源
-                js_pages.push(tmp);
+                js_pages.push(`yivue.pages["${name_page}"] = ${page}\n\n`);
             });
 
             // 正则查找路由脚本
             data_html.replace(regx_route, (match, route) => {
-                // 临时变量
-                let tmp =
-                    "yivue.routes.push(" +
-                    route
-                        .trim()
-                        .replace(/^([\S\s]+?)\{/gi, (_, s) => {
-                            // 去掉变量赋值
-                            return "{";
-                        })
-                        .replace(/\}\;$/gi, (_, n) => {
-                            // 去掉路由结束扩后后面的分号
-                            return "}";
-                        })
-                        .replace(regx_placeholder, (_, n) => {
-                            // 替换占位符
-                            return name_base;
-                        }) +
-                    ")\n\n";
+                route = route
+                    .trim()
+                    .replace(/^([\S\s]+?)\{/gi, (_, s) => {
+                        // 去掉变量赋值
+                        return "{";
+                    })
+                    .replace(/\}\;$/gi, (_, n) => {
+                        // 去掉路由结束扩后后面的分号
+                        return "}";
+                    })
+                    .replace(regx_placeholder, (_, n) => {
+                        // 替换占位符
+                        return name_base;
+                    });
                 // 缓存页面路由资源
-                js_routes.push(tmp);
+                js_routes.push(`yivue.routes.push(${route})\n\n`);
             });
 
             // 正则查找页面css数据
-            data_html.replace(regx_css, (match, style) => {
+            await data_html.replace(regx_css, (match, style) => {
+                //console.log(style.trim().replace(regx_placeholder, "000"));
+                // 先处理占位符
+                style = style.trim().replace(regx_placeholder, (_, n) => {
+                    return "page-" + name_base;
+                });
                 // 缓存页面css资源
-                html_css.push(
-                    "\n" +
-                        style.trim().replace(regx_placeholder, (_, n) => {
-                            return "page-" + name_base;
-                        })
-                );
+                html_css.push(`\n${style}\n`);
             });
 
             // 打印日志
-            console.log(colors.green(name + " page " + prop.name + " 处理完成..."));
+            console.log(colors.green(`项目名称<${name}>  类型<页面>  文件名<${prop.name}>  处理完成...`));
         }
-
         // 开始处理css资源 ======================================================
         // 获取所有文件
         files_all = fs.readdirSync(css_dir, { withFileTypes: true });
 
-        // 过滤所有非 .css 文件
+        // 过滤所有非 .css或.less 文件
         files_filter = files_all.filter(v => {
-            return v.isFile() && path.extname(v.name) === ".css";
+            return (
+                v.isFile() &&
+                [".css", ".less"].some(vv => {
+                    return path.extname(v.name) === vv;
+                })
+            );
         });
 
         // 循环读取所有css
@@ -508,8 +481,10 @@ function yivue() {
         // 生成路由文件
         fs.writeFileSync(path.join(dist_dir, route_file), js_routes.join(""));
 
+        let lessRes = await lessCompile([...css_array, ...html_css].join(""), {});
+
         // 生成样式文件
-        fs.writeFileSync(path.join(dist_dir, css_file), [...css_array, ...html_css].join(""));
+        fs.writeFileSync(path.join(dist_dir, css_file), lessRes.code ? lessRes.data : "");
 
         // 读 html 模板文件
         let data_from_html = fs.readFileSync(path.join(from_html), { encoding: "utf8" });
@@ -536,32 +511,34 @@ function yivue() {
         if (check_success === false) {
             console.log(colors.red(name + " 处理失败...\n"));
         } else {
-            console.log("\n");
-            console.log(colors.yellow(name + " 项目处理完成..."));
             console.log("---------------------------------");
-            console.log(colors.bgCyan(DateTime()));
+            console.log(colors.bgCyan(tool.DateTime()));
             console.log("---------------------------------");
         }
     }
 }
-function DateTime() {
-    var t = new Date();
-    var Y = t.getFullYear();
-    var M = ("00" + (t.getMonth() + 1)).substr(-2);
-    var D = ("00" + t.getDate()).substr(-2);
-    var H = ("00" + t.getHours()).substr(-2);
-    var I = ("00" + t.getMinutes()).substr(-2);
-    var S = ("00" + t.getSeconds()).substr(-2);
-    return Y + "-" + M + "-" + D + " " + H + ":" + I + ":" + S;
-}
+
 yivue();
+
+// 缓冲变量，避免频繁打包
+let timeold = Date.now();
+let timenew = 0;
+let timeout = 500;
 let watcher = chokidar
     .watch(path.join(config_dir, "src"), {
         ignored: /(^|[\/\\])\../
     })
     .on("unlink", path => {
-        yivue();
+        timenew = Date.now();
+        if (timenew - timeold > timeout) {
+            yivue();
+            timeold = timenew;
+        }
     })
     .on("change", path => {
-        yivue();
+        timenew = Date.now();
+        if (timenew - timeold > timeout) {
+            yivue();
+            timeold = timenew;
+        }
     });

@@ -1,6 +1,6 @@
 {
     "name": "yivue",
-    "version": "3.3.0",
+    "version": "4.0.0",
     "description": "用简单易懂的方式，开发基于VUE的单页应用。",
     "main": "yivue.js",
     "scripts": {
@@ -26,6 +26,7 @@
     "homepage": "https://github.com/chenbimo/yivue#readme",
     "dependencies": {
         "chokidar": "^3.0.0",
-        "colors": "^1.3.3"
+        "colors": "^1.3.3",
+        "less": "^3.9.0"
     }
 }

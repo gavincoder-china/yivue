@@ -6,9 +6,11 @@
 | ---------- | ---------------------------------------------------- |
 | 项目       | yivue                                                |
 | 用途       | 使用简单易懂的方式开发 VUE 单页应用的构建处理工具。  |
-| 版本       | 3.3.0                                                |
-| 更新时间   | 2019 年 05 月 26 日                                  |
+| 版本       | 4.0.0                                                |
+| 更新时间   | 2019 年 05 月 27 日                                  |
 | 作者       | 陈随易                                               |
+| 微信       | c91374286                                            |
+| QQ         | 24323626                                             |
 | 邮箱       | bimostyle@qq.com                                     |
 | 知乎       | [知乎陈随易](https://www.zhihu.com/people/chensuiyi) |
 | 全栈交流群 | 147076513                                            |
@@ -19,12 +21,14 @@
 
     npm install -g yivue
 
-## 下载yivue-example项目基础模板
+## 下载 yivue-example 项目基础模板
 
 ```bash
 git clone https://github.com/chenbimo/yivue-example.git
 ```
+
 或者
+
 ```bash
 npm install yivue-example
 ```
@@ -67,17 +71,19 @@ src 目录下的每个直接子目录，都是一个单独的单页项目。如�
 <html>
     <head>
         <title>yivue demo</title>
+        <!-- 字符编码 -->
         <meta charset="utf-8" />
+        <!-- 适配手机端 -->
         <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+        <!-- pure css框架 -->
+        <link rel="stylesheet" type="text/css" href="../public/lib/css/pure-min.css" />
+        <!-- 自定义 css 样式 -->
         <link rel="stylesheet" type="text/css" href="../public/css/yivue.css" />
     </head>
 
     <body>
         <div class="YiVue" id="YiVue">
-            <router-view name="head"></router-view>
-            <router-view name="menu"></router-view>
-            <router-view name="body"></router-view>
-            <router-view name="foot"></router-view>
+            <router-view></router-view>
         </div>
     </body>
 
